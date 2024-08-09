@@ -25,26 +25,21 @@ driver.get(url)
 # Wait for the page to load
 time.sleep(5)  # Or use WebDriverWait for a better approach
 
-# Find the specific script tag containing the video URL
 try:
-    find = driver.find_element(by=By.XPATH, value='/html/head/script[3]')
-    text = find.get_attribute('innerText')
-    driver.close()
+    # Locate the meta tag that contains the video URL
+    meta_tag = driver.find_element(By.XPATH, '//meta[@property="og:video"]')
+    video_url = meta_tag.get_attribute('content')
 
-    # Extract the video URL from the script content
-    start = text.index('"contentUrl":"')
-    end = text.index('","thumbnailUrl"', start + 14)
-    new_text = text[start + 14:end].replace('\\/', '/')
-
-    # Print the extracted URL for verification
+    # Print the extracted video URL
     print('--------------')
-    print(new_text)
+    print(video_url)
 
     # Download the video from the extracted URL
-    response = requests.get(new_text, stream=True)
+    response = requests.get(video_url, stream=True)
     with open('output.mp4', 'wb') as out_file:
         shutil.copyfileobj(response.raw, out_file)
     del response
 except Exception as e:
     print(f"An error occurred: {e}")
+finally:
     driver.quit()
