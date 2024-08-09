@@ -1,8 +1,9 @@
-import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import shutil
 import requests
 
@@ -22,12 +23,13 @@ driver = webdriver.Chrome(service=service, options=chrome_options)
 url = 'https://www.instagram.com/reel/url/'
 driver.get(url)
 
-# Wait for the page to load
-time.sleep(5)  # Or use WebDriverWait for a better approach
-
 try:
-    # Locate the meta tag that contains the video URL
-    meta_tag = driver.find_element(By.XPATH, '//meta[@property="og:video"]')
+    # Wait until the meta tag with the video URL is present
+    meta_tag = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, '//meta[@property="og:video"]'))
+    )
+
+    # Get the content of the meta tag, which contains the video URL
     video_url = meta_tag.get_attribute('content')
 
     # Print the extracted video URL
