@@ -22,21 +22,16 @@ driver = webdriver.Chrome(service=service, options=chrome_options)
 # URL to the Instagram reel
 url = 'https://www.instagram.com/reel/url/'
 driver.get(url)
-
+# Check for another possible source of video URL
 try:
-    # Wait until the meta tag with the video URL is present
-    meta_tag = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '//meta[@property="og:video"]'))
+    video_tag = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.TAG_NAME, 'video'))
     )
+    video_url = video_tag.get_attribute('src')
 
-    # Get the content of the meta tag, which contains the video URL
-    video_url = meta_tag.get_attribute('content')
-
-    # Print the extracted video URL
     print('--------------')
     print(video_url)
 
-    # Download the video from the extracted URL
     response = requests.get(video_url, stream=True)
     with open('output.mp4', 'wb') as out_file:
         shutil.copyfileobj(response.raw, out_file)
