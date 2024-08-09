@@ -9,7 +9,7 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
-TOKEN = getenv("BOT_TOKEN")
+TOKEN = 'salom'
 
 dp = Dispatcher()
 
