@@ -11,7 +11,7 @@ Instagram videolarini yuklab olish uchun Telegram bot. Ushbu bot foydalanuvchila
 
 ## Talablar
 
-- Python 3.8 yoki undan yuqori versiya
+- Python 3.11 yoki undan yuqori versiya
 - `aiogram` kutubxonasi
 
 ## Api Key olish
